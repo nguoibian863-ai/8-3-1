@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tặng nè 💖</title>
+<style>
+  body {
+    background-color: #ffe6f2;
+    font-family: "Comic Sans MS", cursive;
+    color: #ff4da6;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    margin: 0;
+    text-align: center;
+    overflow: hidden;
+  }
+
+  h1 {
+    font-size: 2.5em;
+    margin-bottom: 25px;
+    animation: fadeIn 1.5s ease-in-out;
+  }
+
+  .frame {
+    background: #fff0f6;
+    border: 5px solid #ffb6d9;
+    border-radius: 30px;
+    box-shadow: 0 0 25px rgba(255, 105, 180, 0.4);
+    padding: 25px;
+    width: 420px;
+    height: 420px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: box-shadow 0.3s ease;
+    z-index: 5;
+  }
+
+  img {
+    width: 360px;
+    height: 360px;
+    object-fit: contain;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: transform 0.4s ease, opacity 0.5s ease;
+  }
+
+  p {
+    margin-top: 15px;
+    font-size: 1.3em;
+    animation: fadeIn 2s ease-in-out;
+  }
+
+  .message {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: #fff0f6;
+    border: 3px solid #ff99cc;
+    border-radius: 20px;
+    padding: 30px;
+    width: 350px;
+    box-shadow: 0 0 25px rgba(255, 105, 180, 0.6);
+    animation: pop 0.6s ease-in-out forwards;
+    z-index: 10;
+  }
+
+  .overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 192, 203, 0.6);
+    z-index: 9;
+  }
+
+  @keyframes pop {
+    0% { transform: translate(-50%, -50%) scale(0.5); opacity: 0; }
+    100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+  /* Tim rơi */
+  .heart {
+    position: fixed;
+    top: -10px;
+    font-size: 18px;
+    animation: fall linear forwards;
+    z-index: 2;
+    opacity: 0.9;
+  }
+
+  @keyframes fall {
+    0% {
+      transform: translateY(0) rotate(0deg);
+      opacity: 1;
+    }
+    90% {
+      opacity: 1;
+    }
+    100% {
+      transform: translateY(95vh) rotate(720deg) scale(0.6);
+      opacity: 0;
+    }
+  }
+
+  /* Biển tim dưới đáy */
+  .bottom-heart {
+    position: fixed;
+    bottom: 0;
+    animation: wave 2.5s ease-in-out infinite;
+    opacity: 0.85;
+    z-index: 1;
+  }
+
+  @keyframes wave {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-6px); }
+    100% { transform: translateY(0px); }
+  }
+
+  #typedText {
+    white-space: pre-wrap;
+    font-size: 1.1em;
+    color: #ff66b3;
+    min-height: 120px;
+  }
+</style>
+</head>
+<body>
+
+  <h1>Tặng nè 🌷</h1>
+
+  <div class="frame">
+    <img id="giftImg" src="tho.webp" alt="Ảnh thỏ dễ thương 💕">
+  </div>
+
+  <p>Chạm vào ảnh 💞</p>
+
+  <div id="overlay" class="overlay"></div>
+
+  <div id="msg" class="message">
+    <h2>💐Ta Hoang Vinh💐</h2>
+    <div id="typedText"></div>
+  </div>
+
+  <script>
+    const img = document.getElementById("giftImg");
+    const msg = document.getElementById("msg");
+    const overlay = document.getElementById("overlay");
+    const typedText = document.getElementById("typedText");
+
+    const message = 
+    `Hoa nở rực rỡ giữa trời thu,
+    Gửi lời yêu thương đến mẹ, đến em,
+    Bao nhọc nhằn, bao vất vả âm thầm,
+    Ngày hôm nay xin được tri ân trọn vẹn.
+
+    Chúc những người phụ nữ quanh ta,
+    Luôn hạnh phúc, luôn cười rạng ngời,
+    Cuộc sống ngập tràn yêu thương,
+    Mỗi ngày đều là ngày tươi mới!
+    🌻🌻🌻🌻🌻🌻🌻🌻🌻🌻🌻🌻
+    `;
+
+    let showingFlower = false;
+    let typing = false;
+
+    img.addEventListener("click", () => {
+      if (!showingFlower) {
+        img.style.opacity = "0";
+        setTimeout(() => {
+          img.src = "https://media.beehiiv.com/uploads/asset/file/9a3f00e4-f37d-4920-9bde-d8b290b2ca9c/flower.gif";
+          img.style.opacity = "1";
+          showingFlower = true;
+        }, 600);
+      } else {
+        overlay.style.display = "block";
+        msg.style.display = "block";
+
+        if (!typing) {
+          typing = true;
+          typedText.textContent = "";
+          let i = 0;
+          const interval = setInterval(() => {
+            if (i < message.length) {
+              typedText.textContent += message[i];
+              i++;
+            } else {
+              clearInterval(interval);
+            }
+          }, 50);
+        }
+      }
+    });
+
+    overlay.addEventListener("click", () => {
+      msg.style.display = "none";
+      overlay.style.display = "none";
+      typing = false;
+    });
+
+    // 💖 Màu trái tim đậm chất 20/10 (tông hồng – đỏ – tím – pastel)
+    const heartColors = [
+      "#ff99cc", "#ff66b2", "#ffb6c1", "#ff4da6", "#ff80bf",
+      "#ff3366", "#ff6699", "#ffccff", "#ffa6c9", "#ff99ff",
+      "#f78fb3", "#ffb3e6", "#e6b3ff", "#ffc2d1", "#ffdee9"
+    ];
+
+    // 🌊 Tạo biển tim sẵn
+    function createHeartOcean() {
+      for (let i = 0; i < 60; i++) {
+        const heart = document.createElement("div");
+        heart.classList.add("bottom-heart");
+        heart.innerHTML = "💖";
+        const color = heartColors[Math.floor(Math.random() * heartColors.length)];
+        heart.style.color = color;
+        heart.style.left = Math.random() * 100 + "vw";
+        heart.style.fontSize = Math.random() * 20 + 10 + "px";
+        heart.style.animationDelay = Math.random() * 2 + "s";
+        document.body.appendChild(heart);
+      }
+    }
+
+    // 💗 Tim rơi nhanh, nhiều, xoay và tan dần
+    function createFallingHeart() {
+      const heart = document.createElement("div");
+      heart.classList.add("heart");
+      heart.innerHTML = "💖";
+      heart.style.left = Math.random() * 100 + "vw";
+      heart.style.fontSize = Math.random() * 25 + 10 + "px";
+      heart.style.animationDuration = (Math.random() * 1.5 + 1.2) + "s"; // nhanh hơn
+      const color = heartColors[Math.floor(Math.random() * heartColors.length)];
+      heart.style.color = color;
+      heart.style.transform = `rotate(${Math.random() * 360}deg)`;
+
+      document.body.appendChild(heart);
+      setTimeout(() => heart.remove(), 3000);
+    }
+
+    // 🌟 Gọi khi khởi động
+    createHeartOcean();
+    setInterval(createFallingHeart, 60); // tim rơi dày đặc
+  </script>
+</body>
+</html>
